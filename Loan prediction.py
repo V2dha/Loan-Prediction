@@ -134,21 +134,36 @@ from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size  = 0.2)
 
 
-# In[14]:
+# In[127]:
 
 
+# Using Logistic Regression
 from sklearn.linear_model import LogisticRegression
 log = LogisticRegression()
 log.fit(x_train, y_train)
-
-
-# In[18]:
-
-
 y_pred = log.predict(x_test)
 
 
-# In[23]:
+# In[99]:
+
+
+#Using Knn
+from sklearn.neighbors import KNeighborsClassifier
+k = 2
+neigh = KNeighborsClassifier(n_neighbors = k).fit(x_train, y_train)
+y_pred = neigh.predict(x_test)
+
+
+# In[107]:
+
+
+#Using Decision Tree
+from sklearn.tree import DecisionTreeClassifier
+loantree = DecisionTreeClassifier(criterion = 'entropy', max_depth = 1).fit(x_train, y_train)
+y_pred = loantree.predict(x_test)
+
+
+# In[128]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
@@ -192,7 +207,7 @@ def plot_confusion_matrix(cm, classes,
 print(confusion_matrix(y_test, y_pred, labels=[1,0]))
 
 
-# In[24]:
+# In[129]:
 
 
 cnf_matrix = confusion_matrix(y_test, y_pred, labels=[1,0])
@@ -203,7 +218,15 @@ plt.figure()
 plot_confusion_matrix(cnf_matrix, classes=['churn=1','churn=0'],normalize= False,  title='Confusion matrix')
 
 
-# In[25]:
+# In[130]:
+
+
+print(classification_report(y_test, y_pred))
+
+
+# Both Logistic Regression and Decision Tree with depth = 1 gave 75% accuracy
+
+# In[131]:
 
 
 test_df = pd.read_csv(r'C:\Users\vividha\Desktop\Datasets\Loan Prediction test.csv')
@@ -254,7 +277,7 @@ test_df['Property_Area'] = le_pro.transform(test_df['Property_Area'])
    
 
 
-# In[26]:
+# In[132]:
 
 
 x_test1=test_df.drop('Loan_ID', axis=1)
